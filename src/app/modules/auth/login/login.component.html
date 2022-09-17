@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <h5 class="card-title">SimplySmart</h5>
+    <div class="col-md-6 offset-md-3 mt-5">
+      <div style="background-color: #f3f3f3" class="card card-user">
+        <div class="card-header">
+          <h5 class="card-title">Super Admin</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form" novalidate>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" formControlName="email" class="form-control" placeholder="e.g test@gmail.com">
+                <span class="text-danger" *ngFor="let message of displayValidationMessages('email')">
+                  {{message}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" formControlName="password" placeholder="password">
+                <span class="text-danger" *ngFor="let message of displayValidationMessages('password')">
+                  {{message}}
+                </span>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <!--
+                <div class="row">
+                <div class="col-6">
+                  <a routerLink="/signup" class="text-primary">click here to Sign Up</a>
+                </div>
+                <div class="col-6">
+                  <a routerLink="/forgotpassword" class="text-primary float-right">Forget password</a>
+                </div>
+              </div>
+            -->
+            </div>
+            <div class="col-md-12">
+              <div class="update">
+                <button type="submit" (click)="onSave()" class="btn btn-primary btn-round float-right">Login</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
