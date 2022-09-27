@@ -26,4 +26,8 @@ export class AdminService {
     return this.Api.get(this.restApi.GETALL_COMPLAINTS);
   }
 
+  getAllDepartments(): Observable<any> {
+    return this.Api.get(this.restApi.GET_DEPARTMENTS);
+  }
+
 }

@@ -1,3 +1,5 @@
+import { UserComponent } from './../user/user.component';
+import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { AdminService } from './../../layouts/admin-layout/service/admin.service';
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
@@ -17,7 +19,7 @@ declare interface TableData {
 })
 
 export class TableComponent implements OnInit , AfterViewInit {
-  displayedColumns: string[] = ['aasm_state', 'description', 'of_type', 'priority','resident_name'];
+  displayedColumns: string[] = ['aasm_state', 'description', 'of_type', 'priority','resident_name','actions'];
   dataSource = new MatTableDataSource <any> (null);
 
   isdataloaded
@@ -28,7 +30,22 @@ export class TableComponent implements OnInit , AfterViewInit {
 
   constructor(private adminService: AdminService,
     private toastr: ToastrService,
+    public dialog: MatDialog
     ){}
+
+    showDetil(complaintDetail){
+      this.dialog.open(UserComponent, {
+        data: {
+          animal: complaintDetail,
+        },
+      });
+
+      console.log(complaintDetail);
+    }
+
+    editDetail(complaintDetail){
+      console.log(complaintDetail);      
+    }
 
   ngOnInit(){
     debugger;
