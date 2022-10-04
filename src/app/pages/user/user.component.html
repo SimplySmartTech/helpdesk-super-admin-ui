@@ -1,115 +1,229 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="card card-user">
-      <div class="card-header">
-        <h5 class="card-title">Edit Complaint</h5>
-      </div>
-      <div class="card-body">
-        <form>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Project</label>
-                <input type="text" class="form-control" disabled="" placeholder="Project" value="">
+<ng-container *ngIf="show else noshow">
+  <div class="row" *ngIf="mode == 'edit'">
+    <div class="col-md-12">
+      <div class="card card-user">
+        <div class="card-header">
+          <h5 class="card-title">Edit Complaint</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="formComplaint">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Project</label>
+                  <input type="text" class="form-control" disabled="true" placeholder="Project" formControlName="project">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Raised By</label>
+                  <!-- <mat-select class="form-control" formControlName="raised_by">
+                    <mat-option value="one">First option</mat-option>
+                  </mat-select> -->
+                  <mat-select class="form-control" formControlName="raised_by" disabled="true">
+                    <mat-option *ngFor="let type of RAISED_BY;let i = index" [value]="RAISED_BY[i]">{{RAISED_BY[i]}}
+                    </mat-option>
+                  </mat-select>
+                </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Raised By</label>
-                <mat-select class="form-control">
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
-                </mat-select>
-              </div>  
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 pr-1">
-              <div class="form-group">
-                <label>Type</label>
-                <mat-select class="form-control">
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
-                </mat-select>
+            <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label>Type</label>
+                  <mat-select class="form-control" formControlName="type" disabled="true">
+                    <mat-option *ngFor="let type of TYPES;let i = index" [value]="TYPES[i]">{{TYPES[i]}}</mat-option>
+                  </mat-select>
+                </div>
+              </div>
+              <div class="col-md-6 pl-1">
+                <div class="form-group">
+                  <label>Department</label>
+                  <!-- <input type="text" placeholder="Pick one" aria-label="Number" matInput [matAutocomplete]="auto" formControlName="input"> -->
+                  <!-- <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (onSelectionChange)="getValue($event)" formControlName="department">
+                    <mat-option *ngFor="let type of department | async" [value]="type">
+                      {{type.name}}
+                    </mat-option>
+                  </mat-autocomplete> -->
+                  <mat-select class="form-control" formControlName="department"  (selectionChange)="getValue($event)">
+                    <mat-option *ngFor="let type of department;let i = index" [value]="type">{{type.name}}</mat-option>
+                  </mat-select>
+                </div>
               </div>
             </div>
-            <div class="col-md-6 pl-1">
-              <div class="form-group">
-                <label>Department</label>
-                <mat-select class="form-control">
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
-                </mat-select>
-              </div>
-            </div>
-          </div>
 
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Department</label>
-                <mat-select class="form-control">
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
-                </mat-select>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Staff</label>
+                  <mat-select class="form-control" formControlName="staff">
+                    <mat-option *ngFor="let type of staffWorker;let i = index" [value]="type">{{type.name}}</mat-option>
+                  </mat-select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Field Engineer</label>
+                  <mat-select class="form-control" formControlName="field_engineer">
+                    <mat-option *ngFor="let type of fildWorkers;let i = index" [value]="type">{{type.name}}</mat-option>
+                  </mat-select>
+                </div>
               </div>
             </div>
-          </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea class="form-control textarea" formControlName="description"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Priority</label>
+                  <mat-select class="form-control" formControlName="priority">
+                    <mat-option *ngFor="let type of PRIORITY;let i = index" [value]="PRIORITY[i]">{{PRIORITY[i]}}
+                    </mat-option>
+                  </mat-select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Status</label>
+                  <mat-select class="form-control" formControlName="status">
+                    <mat-option *ngFor="let type of STATUS;let i = index" [value]="STATUS[i]">{{STATUS[i]}}</mat-option>
+                  </mat-select>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="this.formComplaint.get('status').value != 'Start'">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Reason</label>
+                  <input type="text" class="form-control" placeholder="reason" formControlName="reason">
+                </div>
+              </div>
+            </div>
 
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Staff</label>
-                <mat-select class="form-control">
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
-                </mat-select>
+            <div class="row">
+              <div class="update ml-auto mr-auto col-md-6">
+                <button type="submit" class="btn btn-primary btn-round" (click)="update()">Save</button>
+              </div>
+              <div class="update ml-auto mr-auto col-md-6">
+                <button type="submit" class="btn btn-primary btn-round" (click)="cancel()">Cancel</button>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Field Engineer</label>
-                <mat-select class="form-control">
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
-                </mat-select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Description</label>
-                <textarea class="form-control textarea">Oh so, your weak rhyme You doubt I'll bother, reading into it</textarea>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Priority</label>
-                <mat-select class="form-control">
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
-                </mat-select>              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Status Code</label>
-                <mat-select class="form-control">
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
-                </mat-select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="update ml-auto mr-auto">
-              <button type="submit" class="btn btn-primary btn-round">Update Profile</button>
-            </div>
-          </div>
-        </form>
+
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+  <form class="popup-form" [formGroup]="formComplaint" novalidate>
+    <div class="row" *ngIf="mode == 'show'">
+      <div class="col-md-12">
+        <div class="card card-user">
+          <div class="card-header">
+            <h5 class="card-title">Show Complaint</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <label>Project</label>
+              </div>
+              <div class="col-md-6">
+                {{this.details?.unit_name}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Raised By</label>
+              </div>
+              <div class="col-md-6">
+                {{this.details?.resident_name}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Type</label>
+              </div>
+              <div class="col-md-6">
+                {{this.details?.of_type}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Department</label>
+              </div>
+              <div class="col-md-6">
+                {{this.details?.department_id}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Description</label>
+              </div>
+              <div class="col-md-6">
+                {{this.details?.description}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Priority</label>
+              </div>
+              <div class="col-md-6">
+                {{this.details?.priority}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Status</label>
+              </div>
+              <div class="col-md-6">
+                {{this.details?.aasm_state}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Field Engineer</label>
+              </div>
+              <div class="col-md-6">
+                {{this.details?.field_engineer}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Staff</label>
+              </div>
+              <div class="col-md-6">
+                {{this.details?.backend_worker_id}}
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="update ml-auto mr-auto col-md-6">
+                <button type="submit" class="btn btn-primary btn-round" (click)="mode = 'edit'">Update Profile</button>
+              </div>
+              <div class="update ml-auto mr-auto col-md-6">
+                <button type="submit" class="btn btn-primary btn-round" (click)="cancel()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-container>
+<ng-template #noshow>
+  <mat-spinner *ngIf="!show"></mat-spinner>
+</ng-template>

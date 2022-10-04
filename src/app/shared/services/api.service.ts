@@ -13,6 +13,10 @@ export class ApiService {
     private settingsProvider: SettingsProvider) {
   }
 
+  put<T>(action: string, body?: any, options?: Object): Observable<T> {
+    return this.http.put<T>(this.getAPIPath(action), body, options);
+  }
+
   post<T>(action: string, body?: any, options?: Object): Observable<T> {
     return this.http.post<T>(this.getAPIPath(action), body, options);
   }

@@ -7,7 +7,7 @@ import { AngularMaterialModule } from './../../shared/modules/material-module';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AdminLayoutRoutes } from './admin-layout.routing';
 
@@ -17,8 +17,9 @@ import { TableComponent }           from '../../pages/table/table.component';
 import { TypographyComponent }      from '../../pages/typography/typography.component';
 import { IconsComponent }           from '../../pages/icons/icons.component';
 import { NotificationsComponent }   from '../../pages/notifications/notifications.component';
-
+import { SpinnerInterceptorInterceptor } from '../../interceptors/spinner-interceptor.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -31,6 +32,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FixedPluginModule,
     SidebarModule,
     NavbarModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   declarations: [
     DashboardComponent,
@@ -40,6 +43,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     IconsComponent,
     NotificationsComponent,
     AdminLayoutComponent
+  ],
+  providers:[
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptorInterceptor,
+      multi: true
+    },
   ]
 })
 

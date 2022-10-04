@@ -11,8 +11,8 @@ import { ToastrModule } from "ngx-toastr";
 
 import { SidebarModule } from './sidebar/sidebar.module';
 import { FooterModule } from './shared/components/footer/footer.module';
-import { NavbarModule} from './shared/components/navbar/navbar.module';
-import { FixedPluginModule} from './shared/components/fixedplugin/fixedplugin.module';
+import { NavbarModule } from './shared/components/navbar/navbar.module';
+import { FixedPluginModule } from './shared/components/fixedplugin/fixedplugin.module';
 
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
@@ -20,7 +20,8 @@ import { AppRoutes } from './app.routing';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { restApiSuffix, API_CONFIG } from './shared/constants/rest-api.constants';
-
+import { SpinnerInterceptorInterceptor } from './interceptors/spinner-interceptor.interceptor';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -29,16 +30,19 @@ import { restApiSuffix, API_CONFIG } from './shared/constants/rest-api.constants
   ],
   imports: [
     BrowserAnimationsModule,
-    RouterModule.forRoot(AppRoutes,{
+    RouterModule.forRoot(AppRoutes, {
       useHash: false
     }),
-    
+
     ToastrModule.forRoot({
       timeOut: 4000,
       closeButton: true,
       enableHtml: true,
-      positionClass: 'toast-top-center'}),
-    AuthModule
+      positionClass: 'toast-top-center'
+    }),
+    AuthModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     SettingsProvider,
@@ -58,6 +62,11 @@ import { restApiSuffix, API_CONFIG } from './shared/constants/rest-api.constants
     //   useClass: HtttpTokenInterceptorService,
     //   multi: true
     // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptorInterceptor,
+      multi: true
+    },
     {
       provide: API_CONFIG,
       useValue: restApiSuffix,

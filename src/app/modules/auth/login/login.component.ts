@@ -79,8 +79,9 @@ export class LoginComponent implements OnInit {
         }
       }, error => {
         console.log(error);
-        
-        this.toastr.error("Network Error");
+        if(error && error.error && error.error.message)
+          this.toastr.error(error.error.message,"Error");
+        // this.toastr.error("Network Error");
       });
     }
   }

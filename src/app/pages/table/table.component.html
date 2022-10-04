@@ -1,64 +1,70 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <!-- <h4 class="card-title"> Simple Table</h4> -->
-      </div>
-      <form>
-        <div>
-          <input type="text"  #input (keyup)="applyFilter($event)" value="" class="form-control" placeholder="Search...">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <i class="nc-icon nc-zoom-split"></i>
+<div class="d-flex flex-row justify-content-center align-items-center">
+  <mat-spinner *ngIf="!isdataloaded"></mat-spinner>
+</div>
+<ng-container *ngIf="isdataloaded">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <!-- <h4 class="card-title"> Simple Table</h4> -->
+        </div>
+        <form>
+          <div>
+            <input type="text" #input (keyup)="applyFilter($event)" value="" class="form-control" placeholder="Search...">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <i class="nc-icon nc-zoom-split"></i>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
-      <div class="card-body" *ngIf="dataSource">
-        <div class="table-responsive">
-          <div class="mat-elevation-z8">
-            <table class="table" mat-table [dataSource]="dataSource">
-              <ng-container matColumnDef="aasm_state">
-                <th mat-header-cell *matHeaderCellDef> Aasm State </th>
-                <td mat-cell *matCellDef="let element"> {{element.aasm_state}} </td>
-              </ng-container>
-              <ng-container matColumnDef="description">
-                <th mat-header-cell *matHeaderCellDef> Description </th>
-                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
-              </ng-container>
-              <ng-container matColumnDef="of_type">
-                <th mat-header-cell *matHeaderCellDef> Of Type </th>
-                <td mat-cell *matCellDef="let element"> {{element.of_type}} </td>
-              </ng-container>
-              <ng-container matColumnDef="priority">
-                <th mat-header-cell *matHeaderCellDef> Priority </th>
-                <td mat-cell *matCellDef="let element"> {{element.priority}} </td>
-              </ng-container>
-
-              <ng-container matColumnDef="resident_name">
-                <th mat-header-cell *matHeaderCellDef> Resident Name </th>
-                <td mat-cell *matCellDef="let element"> {{element.resident_name}} </td>
-              </ng-container>
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef> Actions</th>
-                <td mat-cell  *matCellDef="let row">
-                  <button class="btn btn-primary btn-round" (click)="showDetil(row)" type="submit">Show</button>
-                  <button class="btn btn-primary btn-round" (click)="editDetail(row)" type="submit">Edit</button>
-                </td>
-              </ng-container> 
-          
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-          
-            <mat-paginator [pageSizeOptions]="[15, 30, 50]"
-                           showFirstLastButtons 
-                           aria-label="Select page of periodic elements">
-            </mat-paginator>
+        </form>
+        <div class="card-body" *ngIf="dataSource">
+          <div class="table-responsive">
+            <div class="mat-elevation-z8">
+              <table class="table" mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="aasm_state">
+                  <th mat-header-cell *matHeaderCellDef> Aasm State </th>
+                  <td mat-cell *matCellDef="let element"> {{element.aasm_state}} </td>
+                </ng-container>
+                <ng-container matColumnDef="description">
+                  <th mat-header-cell *matHeaderCellDef> Description </th>
+                  <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                </ng-container>
+                <ng-container matColumnDef="of_type">
+                  <th mat-header-cell *matHeaderCellDef> Of Type </th>
+                  <td mat-cell *matCellDef="let element"> {{element.of_type}} </td>
+                </ng-container>
+                <ng-container matColumnDef="priority">
+                  <th mat-header-cell *matHeaderCellDef> Priority </th>
+                  <td mat-cell *matCellDef="let element"> {{element.priority}} </td>
+                </ng-container>
+  
+                <ng-container matColumnDef="resident_name">
+                  <th mat-header-cell *matHeaderCellDef> Resident Name </th>
+                  <td mat-cell *matCellDef="let element"> {{element.resident_name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef> Actions</th>
+                  <td mat-cell  *matCellDef="let row">
+                    <button class="btn btn-primary btn-round" (click)="showDetil(row,$event)" type="submit">Show</button>
+                    <button class="btn btn-primary btn-round" (click)="editDetail(row,$event)" type="submit">Edit</button>
+                  </td>
+                </ng-container> 
+            
+  
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="getRowData(row)"></tr>
+              </table>
+  
+              <!-- <mat-paginator [pageSizeOptions]="[15, 30, 50]" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+              </mat-paginator> -->
+            </div>
           </div>
-          
         </div>
       </div>
     </div>
   </div>
-</div>
+</ng-container>
+<mat-paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [length]="totalData"
+(page)="getPaginationData($event)" aria-label="Select page of users"></mat-paginator>

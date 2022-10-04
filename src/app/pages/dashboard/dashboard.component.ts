@@ -13,13 +13,15 @@ export class DashboardComponent implements OnInit{
 
   public complaints: RootObject;
   public isdataloaded: boolean = false;
+  page: number = 1;
+  count: number = 50;
 
   constructor(private adminService: AdminService,
     private toastr: ToastrService,
     ){}
 
     ngOnInit(){
-      this.adminService.getAllComplaints().subscribe( (res)=>{
+      this.adminService.getAllComplaints(this.page,this.count).subscribe( (res)=>{
         if (res){
         this.complaints = res;
         console.log('resss',res);
@@ -32,7 +34,9 @@ export class DashboardComponent implements OnInit{
      }
    }, error => {
      console.log(error);     
-     this.toastr.error("Network Error");
+    //  this.toastr.error("Network Error");
+     if(error && error.error && error.error.message)
+      this.toastr.error(error.error.message,"Error");
    });
 
 
